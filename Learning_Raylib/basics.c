@@ -17,6 +17,8 @@ int main() {
 	Texture2D DefaultPlayerSprite = LoadTexture("Learning_Raylib/sprites/d-s.png");
 
 	int Health = 100;
+	
+	float HitCooldown = 0.0f;
 
     while (!WindowShouldClose()) {
     	float dt = GetFrameTime();
@@ -30,9 +32,14 @@ int main() {
     		DefaultPlayerSprite.height * 0.2
 		};
 
-		Rectangle RactangleHitbox = {700, 300, 100, 50};
+		Rectangle EvilRactangleHitbox = {700, 300, 100, 50};
 
-		if(IsHitboxRetarded(PlayerHitbox, RactangleHitbox)) Health = Health - 10;
+		if(HitCooldown > 0.0f) HitCooldown -= dt;
+
+		if(IsHitboxRetarded(PlayerHitbox, EvilRactangleHitbox) && HitCooldown <= 0.0f) {
+			Health = Health - 10;
+			HitCooldown = 1.0f;
+		}
 
 		if(IsKeyDown(KEY_LEFT_SHIFT)) speed = 300;
 		

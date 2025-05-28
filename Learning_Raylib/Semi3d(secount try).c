@@ -3,15 +3,15 @@
 #include <stdbool.h>
 
 #define TILE_SIZE 64
+#define Window_Width 960 * WindowScale
+#define Window_Height 540 * WindowScale
+#define RaysNumb Window_Width
 
 //Btw, there are farlands
 
 //Global important vals(Like thoes In settings)
 int WindowScale = 1;
-int Window_Width = 960;
-int Window_Height = 540;
 int Fpss = 60;
-int RaysNumb = 300;
 int RenderDistans = 100000;
 float playerFov = 60 * (PI / 180);
 float mouseSensitivity = 0.003f;
@@ -68,8 +68,8 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
         float wallHeight = (TILE_SIZE * (float)(Window_Height * WindowScale) / 2) / correctedDis;
 				
         float screenX = (float)i * ((float)(Window_Width * WindowScale) / RaysNumb);
-
-        DrawRectangle(screenX, 300 - wallHeight / 2, (float)(Window_Height * WindowScale) / RaysNumb, wallHeight, GRAY);
+		
+		DrawRectangle(screenX, 300 - wallHeight / 2, (float)(Window_Width * WindowScale) / RaysNumb, wallHeight, GRAY);
 	}
 }
 
@@ -145,7 +145,6 @@ int main() {
 				else {
 					//Minimap stuff
 					DrawCircleV(playerPos, 25, RED);
-					RayCasting(playerPos, playerAngle, LevelId);
 				}
 
 				EndDrawing();

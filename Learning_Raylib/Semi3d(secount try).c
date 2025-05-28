@@ -4,6 +4,8 @@
 
 #define TILE_SIZE 64
 
+//Btw, there are farlands
+
 //Global important vals(Like thoes In settings)
 int WindowScale = 1;
 int Window_Width = 960;
@@ -81,7 +83,7 @@ int main() {
 	int PlayMode = 0;
 	int LevelId = 0; //Level 0 will always be debug level
 	float playerAngle = 0.0f;
-	Vector2 playerPos = {320.0f, 320.0f};
+	Vector2 playerPos = {340.0f, 340.0f};
 	Vector2 playerDir = {0, 0};
 	float playerFov = 60.0f;
 

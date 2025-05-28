@@ -45,19 +45,29 @@ bool IsItAWall(Vector2 EndPos, int LevelId) {
 void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 	for(int i = 0; i < RaysNumb; i++) {
         float rayAngle = playerAngle - (playerFov / 2) + i * (playerFov / RaysNumb);
-		
+		float distance = 0.0f;
+
 		for(int j = 1; j <= RenderDistans; j++) {
 			Vector2 rayDir = {cosf(rayAngle), sinf(rayAngle)};
 
 			Vector2 EndPos = {playerPos.x + rayDir.x * j, playerPos.y + rayDir.y * j};
 			
+
 			if(IsItAWall(EndPos, LevelId) == false) {
-				DrawLineV(playerPos, EndPos, BLUE);
+				continue;
 			}
 			else {
+				distance = j;
 				break;
 			}
 		}
+        float correctedDis = distance * cosf(rayAngle - playerAngle);
+
+        float wallHeight = (TILE_SIZE * (float)(Window_Height * WindowScale) / 2) / correctedDis;
+				
+        float screenX = (float)i * ((float)(Window_Width * WindowScale) / RaysNumb);
+
+        DrawRectangle(screenX, 300 - wallHeight / 2, (float)(Window_Height * WindowScale) / RaysNumb, wallHeight, GRAY);
 	}
 }
 
@@ -71,7 +81,7 @@ int main() {
 	int PlayMode = 0;
 	int LevelId = 0; //Level 0 will always be debug level
 	float playerAngle = 0.0f;
-	Vector2 playerPos = {0, 0};
+	Vector2 playerPos = {320.0f, 320.0f};
 	Vector2 playerDir = {0, 0};
 	float playerFov = 60.0f;
 
@@ -89,7 +99,6 @@ int main() {
 		//Elseif and not else couse I don't know if there will be any new Mode
 		else if(PlayMode == 1 || PlayMode == 2) {
 			//Level universal calculations
-			PlayMode = 2;
 			playerAngle += dm * mouseSensitivity;
 			
 			Vector2 playerDir = {
@@ -97,7 +106,7 @@ int main() {
 				sin(playerAngle)
 			};
 
-			//Movment calculations
+			//Keyboard calculations
 			int playerSpeed = 100;
 
 			if(IsKeyDown(KEY_LEFT_SHIFT)) playerSpeed = 300;
@@ -118,6 +127,9 @@ int main() {
     			playerPos.y -= sinf(playerAngle + PI / 2) * playerSpeed * dt;
 			}
 
+			if(IsKeyPressed(KEY_TAB) && PlayMode == 1) PlayMode = 2;
+			if(IsKeyPressed(KEY_TAB) && PlayMode == 2) PlayMode = 1;
+
 			if(LevelId == 0) {
 				//All the calcs are in Minimap & Playing Modes in the same time
 				//(universal or something)
@@ -126,7 +138,7 @@ int main() {
 				BeginDrawing();
 				ClearBackground(WHITE);
 				if(PlayMode == 1) {
-					//Game stuff(raycasts)
+					RayCasting(playerPos, playerAngle, 0);
 				}
 				else {
 					//Minimap stuff

@@ -5,12 +5,12 @@
 #define TILE_SIZE 64
 #define Window_Width 960 * WindowScale
 #define Window_Height 540 * WindowScale
-#define RaysNumb Window_Width
+#define RaysNumb 960 * WindowScale
 
 //Btw, there are farlands
 
 //Global important vals(Like thoes In settings)
-int WindowScale = 1;
+float WindowScale = 2;
 int Fpss = 60;
 int RenderDistans = 100000;
 float playerFov = 60 * (PI / 180);
@@ -20,11 +20,11 @@ int DebugMap[11][11] = {
 	{1,1,1,1,1,1,1,1,1,1,1},
 	{1,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,1,0,1,0,0,0,1},
-	{1,0,0,1,1,0,1,1,0,0,1},
+	{1,0,0,0,4,0,1,0,0,0,1},
+	{1,0,0,4,4,0,1,1,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,1,1,0,1,1,0,0,1},
-	{1,0,0,0,1,0,1,0,0,0,1},
+	{1,0,0,3,3,0,2,2,0,0,1},
+	{1,0,0,0,3,0,2,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1},
@@ -35,7 +35,7 @@ Vector2 Vector2Add(Vector2 v1, Vector2 v2) {
 	return returner;
 }
 
-bool IsItAWall(Vector2 EndPos, int LevelId) {
+int ScanForWall(Vector2 EndPos, int LevelId) {
 	//Zrób jakoś żeby można było w sprawdzaniu  dać mapę i szybko to dodać(może macro?)
 	int OnMapX = EndPos.x / TILE_SIZE;
 	int OnMapY = EndPos.y / TILE_SIZE;
@@ -48,6 +48,7 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 	for(int i = 0; i < RaysNumb; i++) {
         float rayAngle = playerAngle - (playerFov / 2) + i * (playerFov / RaysNumb);
 		float distance = 0.0f;
+		int type;
 
 		for(int j = 1; j <= RenderDistans; j++) {
 			Vector2 rayDir = {cosf(rayAngle), sinf(rayAngle)};
@@ -55,28 +56,35 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 			Vector2 EndPos = {playerPos.x + rayDir.x * j, playerPos.y + rayDir.y * j};
 			
 
-			if(IsItAWall(EndPos, LevelId) == false) {
+			if(ScanForWall(EndPos, LevelId) == 0) {
 				continue;
 			}
 			else {
 				distance = j;
+				type = ScanForWall(EndPos, LevelId);
 				break;
 			}
 		}
         float correctedDis = distance * cosf(rayAngle - playerAngle);
 
-        float wallHeight = (TILE_SIZE * (float)(Window_Height * WindowScale) / 2) / correctedDis;
-				
-        float screenX = (float)i * ((float)(Window_Width * WindowScale) / RaysNumb);
+        float wallHeight = (TILE_SIZE * (float)(Window_Height) / 2) / correctedDis;
 		
-		DrawRectangle(screenX, 300 - wallHeight / 2, (float)(Window_Width * WindowScale) / RaysNumb, wallHeight, GRAY);
+		float screenX = (float)i * ((float)Window_Width / RaysNumb);
+				
+		if(type == 1) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, GRAY);
+		if(type == 2) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, GREEN);
+		if(type == 3) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, BLUE);
+		if(type == 4) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, RED);
 	}
 }
 
 int main() {
-	InitWindow(Window_Width * WindowScale, Window_Height * WindowScale, "2.5D, version 2");
+	//Znajdz gdzie jest win_w/h * winScale i usuń winscale
+	InitWindow(Window_Width, Window_Height, "2.5D, version 2");
 	SetTargetFPS(Fpss);
 	DisableCursor();
+
+	Texture2D Wall1 = LoadTexture("/home/sqyd/Pobrane/Untitled.png");
 
 	//Important vals that are dynamic and game can chainge them(playerPos when going
 	//to new level)
@@ -152,5 +160,6 @@ int main() {
 		}
 	}
 
+	UnloadTexture(Wall1);
 	return 0;
 }

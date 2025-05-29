@@ -1,7 +1,6 @@
 #include "raylib.h"
 #include <math.h>
 #include <stdbool.h>
-#include <stdio.h>
 
 #define TILE_SIZE 128
 #define Window_Width 960 * WindowScale
@@ -92,7 +91,7 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 		if(type == 4) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, RED);
 		if(type == 5) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, BROWN);
 
-		//Rysuj Textures[type]
+		//Zrób żeby każdy ray miał 1/64 textury a nie całą
 		Rectangle src = {screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight};
 		DrawTexturePro(Textures[type], src, src, (Vector2){0, 0}, 0.0f, WHITE);
 

@@ -1,8 +1,9 @@
 #include "raylib.h"
 #include <math.h>
 #include <stdbool.h>
+#include <stdio.h>
 
-#define TILE_SIZE 64
+#define TILE_SIZE 128
 #define Window_Width 960 * WindowScale
 #define Window_Height 540 * WindowScale
 #define RaysNumb 960 * WindowScale
@@ -10,13 +11,13 @@
 //Btw, there are farlands
 
 //Global important vals(Like thoes In settings)
-float WindowScale = 2;
+float WindowScale = 1;
 int Fpss = 60;
 int RenderDistans = 100000;
-float playerFov = 60 * (PI / 180);
+float playerFov = 70 * (PI / 180);
 float mouseSensitivity = 0.003f;
 
-int DebugMap[11][11] = {
+int DebugMap[21][11] = {
 	{1,1,1,1,1,1,1,1,1,1,1},
 	{1,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,1},
@@ -27,8 +28,21 @@ int DebugMap[11][11] = {
 	{1,0,0,0,3,0,2,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,0,1,1,1,1,1},
+	{1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,5,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1},
 };
+
+int TextureStep = 63;
+Texture2D Textures[100];
 
 Vector2 Vector2Add(Vector2 v1, Vector2 v2) {
 	Vector2 returner = {v1.x + v2.x, v1.y + v2.y};
@@ -41,7 +55,8 @@ int ScanForWall(Vector2 EndPos, int LevelId) {
 	int OnMapY = EndPos.y / TILE_SIZE;
 
 	//Zrób rzeby na różnych mapach działało
-	return DebugMap[OnMapX][OnMapY];
+	if(LevelId == 0) return DebugMap[OnMapX][OnMapY];
+	else return 0;
 }
 
 void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
@@ -75,6 +90,14 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 		if(type == 2) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, GREEN);
 		if(type == 3) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, BLUE);
 		if(type == 4) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, RED);
+		if(type == 5) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, BROWN);
+
+		//Rysuj Textures[type]
+		Rectangle src = {screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight};
+		DrawTexturePro(Textures[type], src, src, (Vector2){0, 0}, 0.0f, WHITE);
+
+		if(TextureStep <= 0) {TextureStep = 63;}
+		else {TextureStep --;}
 	}
 }
 
@@ -84,7 +107,7 @@ int main() {
 	SetTargetFPS(Fpss);
 	DisableCursor();
 
-	Texture2D Wall1 = LoadTexture("/home/sqyd/Pobrane/Untitled.png");
+	Textures[5] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/WWW.png");
 
 	//Important vals that are dynamic and game can chainge them(playerPos when going
 	//to new level)
@@ -119,7 +142,7 @@ int main() {
 			//Keyboard calculations
 			int playerSpeed = 100;
 
-			if(IsKeyDown(KEY_LEFT_SHIFT)) playerSpeed = 300;
+			if(IsKeyDown(KEY_LEFT_SHIFT)) playerSpeed = 500;
 			if(IsKeyDown(KEY_W)) {
     			playerPos.x += cosf(playerAngle) * playerSpeed * dt;
     			playerPos.y += sinf(playerAngle) * playerSpeed * dt;
@@ -148,7 +171,7 @@ int main() {
 				BeginDrawing();
 				ClearBackground(WHITE);
 				if(PlayMode == 1) {
-					RayCasting(playerPos, playerAngle, 0);
+					RayCasting(playerPos, playerAngle, LevelId);
 				}
 				else {
 					//Minimap stuff
@@ -159,7 +182,7 @@ int main() {
 			}
 		}
 	}
+	UnloadTexture(Textures[5]);
 
-	UnloadTexture(Wall1);
 	return 0;
 }

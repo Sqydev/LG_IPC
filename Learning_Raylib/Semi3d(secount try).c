@@ -92,8 +92,10 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 		if(type == 5) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, BROWN);
 
 		//Zrób żeby każdy ray miał 1/64 textury a nie całą
-		Rectangle src = {screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight};
-		DrawTexturePro(Textures[type], src, src, (Vector2){0, 0}, 0.0f, WHITE);
+		//Remember deepshit that src is how to cut it and drc is the place to pase it
+		Rectangle src = {screenX, 0, screenX, 64};
+		Rectangle drc = {screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight};
+		DrawTexturePro(Textures[type], src, drc, (Vector2){0, 0}, 0.0f, WHITE);
 
 		if(TextureStep <= 0) {TextureStep = 63;}
 		else {TextureStep --;}

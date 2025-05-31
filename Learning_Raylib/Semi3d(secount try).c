@@ -17,28 +17,38 @@ int RenderDistans = 100000;
 float playerFov = 70 * (PI / 180);
 float mouseSensitivity = 0.003f;
 
-int DebugMap[21][11] = {
-	{1,1,1,1,1,1,1,1,1,1,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,4,0,1,0,0,0,1},
-	{1,0,0,4,4,0,1,1,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,3,3,0,2,2,0,0,1},
-	{1,0,0,0,3,0,2,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,1,1,1,1,0,1,1,1,1,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,5,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1},
-	{1,1,1,1,1,1,1,1,1,1,1},
+int DebugMap[100][100] = {
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,7,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,10,0,0,0,0,1,0,0,0,4,0,5,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,4,4,0,5,5,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,3,3,0,2,2,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,9,0,0,0,0,1,0,0,0,3,0,2,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,6,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 };
 
 int TextureStep = 63;
@@ -104,12 +114,6 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 		
 		float screenX = (float)i * ((float)Window_Width / RaysNumb);
 				
-		if(type == 1) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, GRAY);
-		if(type == 2) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, GREEN);
-		if(type == 3) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, BLUE);
-		if(type == 4) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, RED);
-		if(type == 5) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, BROWN);
-
 		//Remember deepshit that src is how to cut it and drc is the place to pase it
 		float textureX = (textureoffset / TILE_SIZE) * Textures[type].width;
 		Rectangle src = {textureX, 0, 1, Textures[type].height};
@@ -124,14 +128,23 @@ int main() {
 	SetTargetFPS(Fpss);
 	DisableCursor();
 
-	Textures[5] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/I'mNotGonnaSugarcoteIt(cutted).jpg");
+	Textures[1] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/GRAY.png");
+	Textures[2] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/RED.png");
+	Textures[3] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/GREEN.png");
+	Textures[4] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/BLUE.png");
+	Textures[5] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/YELLOW.png");
+	Textures[6] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/I'mNotGonnaSugarcoteIt(cutted).jpg");
+	Textures[7] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/Minos_chilling.png");
+	Textures[8] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/miblox_prime.jpg");
+	Textures[9] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/Is_that_minos_prime.png");
+	Textures[10] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/Yes_that_is_minos_prime.png");
 
 	//Important vals that are dynamic and game can chainge them(playerPos when going
 	//to new level)
 	int PlayMode = 0;
 	int LevelId = 0; //Level 0 will always be debug level
 	float playerAngle = 0.0f;
-	Vector2 playerPos = {340.0f, 340.0f};
+	Vector2 playerPos = {TILE_SIZE * 15.5f, TILE_SIZE * 15.5f};
 	Vector2 playerDir = {0, 0};
 	float playerFov = 60.0f;
 

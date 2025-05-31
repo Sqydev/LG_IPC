@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include <math.h>
 #include <stdbool.h>
+#include <threads.h>
 
 #define TILE_SIZE 128
 #define Window_Width 960 * WindowScale
@@ -63,19 +64,37 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
         float rayAngle = playerAngle - (playerFov / 2) + i * (playerFov / RaysNumb);
 		float distance = 0.0f;
 		int type;
+		float textureoffset;
 
 		for(int j = 1; j <= RenderDistans; j++) {
 			Vector2 rayDir = {cosf(rayAngle), sinf(rayAngle)};
 
 			Vector2 EndPos = {playerPos.x + rayDir.x * j, playerPos.y + rayDir.y * j};
-			
 
 			if(ScanForWall(EndPos, LevelId) == 0) {
 				continue;
 			}
 			else {
+				float offsetX = fmod(EndPos.x, TILE_SIZE);
+    			float offsetY = fmod(EndPos.y, TILE_SIZE);
+				
 				distance = j;
 				type = ScanForWall(EndPos, LevelId);
+
+				if (offsetX < 1.0f || offsetX > TILE_SIZE - 1.0f) {
+        			textureoffset = offsetY;
+					
+					if(rayDir.x < 0) {
+        				textureoffset = TILE_SIZE - textureoffset;
+    				}
+    			}
+				else {
+        			textureoffset = offsetX;
+					
+					if(rayDir.y > 0) {
+        				textureoffset = TILE_SIZE - textureoffset;
+    				}
+    			}
 				break;
 			}
 		}
@@ -91,14 +110,11 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 		if(type == 4) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, RED);
 		if(type == 5) DrawRectangle(screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight, BROWN);
 
-		//Zrób żeby każdy ray miał 1/64 textury a nie całą
 		//Remember deepshit that src is how to cut it and drc is the place to pase it
-		Rectangle src = {screenX, 0, screenX, 64};
+		float textureX = (textureoffset / TILE_SIZE) * Textures[type].width;
+		Rectangle src = {textureX, 0, 1, Textures[type].height};
 		Rectangle drc = {screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight};
 		DrawTexturePro(Textures[type], src, drc, (Vector2){0, 0}, 0.0f, WHITE);
-
-		if(TextureStep <= 0) {TextureStep = 63;}
-		else {TextureStep --;}
 	}
 }
 
@@ -108,7 +124,7 @@ int main() {
 	SetTargetFPS(Fpss);
 	DisableCursor();
 
-	Textures[5] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/WWW.png");
+	Textures[5] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/I'mNotGonnaSugarcoteIt(cutted).jpg");
 
 	//Important vals that are dynamic and game can chainge them(playerPos when going
 	//to new level)

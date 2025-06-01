@@ -112,11 +112,11 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 
         float wallHeight = (TILE_SIZE * (float)(Window_Height) / 2) / correctedDis;
 		
-		float screenX = (float)i;
+		int screenX = i;
 				
 		//Remember deepshit that src is how to cut it and drc is the place to pase it
 		float textureX = (textureoffset / TILE_SIZE) * Textures[type].width;
-		Rectangle src = {textureX, 0, 1, Textures[type].height};
+		Rectangle src = {textureX, 0, 0, Textures[type].height};
 		Rectangle drc = {screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight};
 		DrawTexturePro(Textures[type], src, drc, (Vector2){0, 0}, 0.0f, WHITE);
 	}

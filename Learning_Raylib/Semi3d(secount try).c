@@ -72,13 +72,12 @@ int ScanForWall(Vector2 EndPos, int LevelId) {
 void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 	for(int i = 0; i < RaysNumb; i++) {
         float rayAngle = playerAngle - (playerFov / 2) + i * (playerFov / RaysNumb);
+		Vector2 rayDir = {cosf(rayAngle), sinf(rayAngle)};
 		float distance = 0.0f;
 		int type;
 		float textureoffset;
 
 		for(int j = 1; j <= RenderDistans; j++) {
-			Vector2 rayDir = {cosf(rayAngle), sinf(rayAngle)};
-
 			Vector2 EndPos = {playerPos.x + rayDir.x * j, playerPos.y + rayDir.y * j};
 
 			if(ScanForWall(EndPos, LevelId) == 0) {
@@ -91,7 +90,7 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 				distance = j;
 				type = ScanForWall(EndPos, LevelId);
 
-				if (offsetX < 1.0f || offsetX > TILE_SIZE - 1.0f) {
+				if(offsetX < 1.0f || offsetX > TILE_SIZE - 1.0f) {
         			textureoffset = offsetY;
 					
 					if(rayDir.x < 0) {
@@ -105,6 +104,7 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
         				textureoffset = TILE_SIZE - textureoffset;
     				}
     			}
+				
 				break;
 			}
 		}
@@ -112,7 +112,7 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 
         float wallHeight = (TILE_SIZE * (float)(Window_Height) / 2) / correctedDis;
 		
-		float screenX = (float)i * ((float)Window_Width / RaysNumb);
+		float screenX = (float)i;
 				
 		//Remember deepshit that src is how to cut it and drc is the place to pase it
 		float textureX = (textureoffset / TILE_SIZE) * Textures[type].width;
@@ -132,6 +132,7 @@ int main() {
 	Textures[2] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/RED.png");
 	Textures[3] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/GREEN.png");
 	Textures[4] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/BLUE.png");
+	//for(int i = 5; i < 11; i++) Textures[i] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/YELLOW.png");
 	Textures[5] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/YELLOW.png");
 	Textures[6] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/I'mNotGonnaSugarcoteIt(cutted).jpg");
 	Textures[7] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/Minos_chilling.png");

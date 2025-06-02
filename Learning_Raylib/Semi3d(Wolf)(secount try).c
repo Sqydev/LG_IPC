@@ -59,7 +59,7 @@ Vector2 Vector2Add(Vector2 v1, Vector2 v2) {
 	return returner;
 }
 
-int ScanForWall(Vector2 EndPos, int LevelId) {
+int ScanMap(Vector2 EndPos, int LevelId) {
 	//Zrób jakoś żeby można było w sprawdzaniu  dać mapę i szybko to dodać(może macro?)
 	int OnMapX = EndPos.x / TILE_SIZE;
 	int OnMapY = EndPos.y / TILE_SIZE;
@@ -76,11 +76,12 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 		float distance = 0.0f;
 		int type;
 		float textureoffset;
+		float HeightH;
 
 		for(int j = 1; j <= RenderDistans; j++) {
 			Vector2 EndPos = {playerPos.x + rayDir.x * j, playerPos.y + rayDir.y * j};
 
-			if(ScanForWall(EndPos, LevelId) == 0) {
+			if(ScanMap(EndPos, LevelId) == 0) {
 				continue;
 			}
 			else {
@@ -88,9 +89,9 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
     			float offsetY = fmod(EndPos.y, TILE_SIZE);
 				
 				distance = j;
-				type = ScanForWall(EndPos, LevelId);
+				type = ScanMap(EndPos, LevelId);
 
-				if(offsetX < 1.0f || offsetX > TILE_SIZE - 1.0f) {
+				if(offsetX < 2.0f || offsetX > TILE_SIZE - 1.0f) {
         			textureoffset = offsetY;
 					
 					if(rayDir.x < 0) {
@@ -110,14 +111,14 @@ void RayCasting(Vector2 playerPos, float playerAngle, int LevelId) {
 		}
         float correctedDis = distance * cosf(rayAngle - playerAngle);
 
-        float wallHeight = (TILE_SIZE * (float)(Window_Height) / 2) / correctedDis;
+		float wallHeight = (TILE_SIZE * (float)(Window_Height) / 2) / correctedDis;
 		
 		int screenX = i;
 				
 		//Remember deepshit that src is how to cut it and drc is the place to pase it
 		float textureX = (textureoffset / TILE_SIZE) * Textures[type].width;
 		Rectangle src = {textureX, 0, 0, Textures[type].height};
-		Rectangle drc = {screenX, Window_Height / 2 - wallHeight / 2, (float)(Window_Width) / RaysNumb, wallHeight};
+		Rectangle drc = {screenX, Window_Height / 2 - wallHeight / 2, 1, wallHeight};
 		DrawTexturePro(Textures[type], src, drc, (Vector2){0, 0}, 0.0f, WHITE);
 	}
 }
@@ -147,7 +148,6 @@ int main() {
 	float playerAngle = 0.0f;
 	Vector2 playerPos = {TILE_SIZE * 15.5f, TILE_SIZE * 15.5f};
 	Vector2 playerDir = {0, 0};
-	float playerFov = 60.0f;
 
 	while(!WindowShouldClose()) {
 		//thoes ones used everywhere and updated every seccount

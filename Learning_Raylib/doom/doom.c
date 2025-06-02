@@ -70,12 +70,12 @@ int main() {
 			playerPos.y -= playerDir.y * playerSpeed * dt;
 		}
 		if(IsKeyDown(KEY_D)) {
-			playerPos.x -= playerDir.y * playerSpeed * dt;
-			playerPos.y -= playerDir.x * playerSpeed * dt;
+			playerPos.x -= cosf(playerAngle + PI / 2) * playerSpeed * dt;
+			playerPos.y -= sinf(playerAngle + PI / 2) * playerSpeed * dt;
 		}
 		if(IsKeyDown(KEY_A)) {
-			playerPos.x += playerDir.y * playerSpeed * dt;
-			playerPos.y += playerDir.x * playerSpeed * dt;
+			playerPos.x += cosf(playerAngle + PI / 2) * playerSpeed * dt;
+			playerPos.y += sinf(playerAngle + PI / 2) * playerSpeed * dt;
 		}
 
 		BeginDrawing();

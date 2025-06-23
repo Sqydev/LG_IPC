@@ -29,6 +29,11 @@ Vector2 Vector2SumAndScale(Vector2 v1, Vector2 v2, float Scale) {
 	return Returner;
 }
 
+Vector2 ConvertSecPosRelativeToPlayer(Sector sector, Vector2 playerPos) {
+	
+}
+
+
 int main() {
 	InitWindow(Window_Width, Window_Height, "Doom Like Engine");
 	SetTargetFPS(TargetFps);

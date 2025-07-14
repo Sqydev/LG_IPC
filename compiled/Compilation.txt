@@ -1,0 +1,6 @@
+Woolf1:
+	gcc -o compiled/Woolf1.out src/semi3d/wolfenstein/Wolfenstein1.c -lraylib -lm && ./compiled/Woolf1.out
+Woolf2:
+	gcc -o compiled/Woolf2.out src/semi3d/wolfenstein/Wolfenstein2.c -lraylib -lm && ./compiled/Woolf2.out
+Doom1:
+	gcc -o compiled/Doom1.out src/semi3d/doom/Doom1.c -lraylib -lm && ./compiled/Doom1.out

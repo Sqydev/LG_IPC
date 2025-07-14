@@ -1,2 +1,0 @@
-gcc Learning_Raylib/basics.c -lraylib -lm -ldl -lpthread -lGL -lrt -lX11 && ./a.out
-

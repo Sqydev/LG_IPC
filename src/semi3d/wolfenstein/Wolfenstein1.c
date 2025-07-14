@@ -40,7 +40,7 @@ bool IsThereAnWall(float x, float y) {
 }
 
 void RayCasting(Vector2 playerPos, float playerAngle, float playerFov) {
-    int numRays = 300;
+    int numRays = WINDOW_W;
     float angleStep = playerFov / numRays;
 
     for (int i = 0; i < numRays; i++) {
@@ -71,7 +71,7 @@ int main() {
 	SetTargetFPS(FPSS);
 	DisableCursor();
 
-	Vector2 playerPos = {5.0f * TILE_SIZE, 5.0f * TILE_SIZE};
+	Vector2 playerPos = {5.0f * TILE_SIZE, 6.0f * TILE_SIZE};
 
 	float playerAngle = 0.0f;
 

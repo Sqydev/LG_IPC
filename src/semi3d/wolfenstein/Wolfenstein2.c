@@ -129,17 +129,17 @@ int main() {
 	SetTargetFPS(Fpss);
 	DisableCursor();
 
-	Textures[1] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/GRAY.png");
-	Textures[2] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/RED.png");
-	Textures[3] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/GREEN.png");
-	Textures[4] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/BLUE.png");
-	//for(int i = 5; i < 11; i++) Textures[i] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/YELLOW.png");
-	Textures[5] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/YELLOW.png");
-	Textures[6] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/I'mNotGonnaSugarcoteIt(cutted).jpg");
-	Textures[7] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/Minos_chilling.png");
-	Textures[8] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/miblox_prime.jpg");
-	Textures[9] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/Is_that_minos_prime.png");
-	Textures[10] = LoadTexture("/home/sqyd/projekty/c/LG_IPC/Learning_Raylib/sprites(3d)/Yes_that_is_minos_prime.png");
+	Textures[1] = LoadTexture("./src/semi3d/textures/GRAY.png");
+	Textures[2] = LoadTexture("./src/semi3d/textures/RED.png");
+	Textures[3] = LoadTexture("./src/semi3d/textures/GREEN.png");
+	Textures[4] = LoadTexture("./src/semi3d/textures/BLUE.png");
+	//for(int i = 5; i < 11; i++) Textures[i] = LoadTexture("./src/semi3d/textures/YELLOW.png");
+	Textures[5] = LoadTexture("./src/semi3d/textures/YELLOW.png");
+	Textures[6] = LoadTexture("./src/semi3d/textures/I'mNotGonnaSugarcoteIt(cutted).jpg");
+	Textures[7] = LoadTexture("./src/semi3d/textures/Minos_chilling.png");
+	Textures[8] = LoadTexture("./src/semi3d/textures/miblox_prime.jpg");
+	Textures[9] = LoadTexture("./src/semi3d/textures/Is_that_minos_prime.png");
+	Textures[10] = LoadTexture("./src/semi3d/textures/Yes_that_is_minos_prime.png");
 
 	//Important vals that are dynamic and game can chainge them(playerPos when going
 	//to new level)

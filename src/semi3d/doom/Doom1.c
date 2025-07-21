@@ -23,14 +23,14 @@ Vector2 Vector2Sum(Vector2 v1, Vector2 v2) {
 	return Returner;
 }
 
-//Yes, I'm that lazy
 Vector2 Vector2SumAndScale(Vector2 v1, Vector2 v2, float Scale) {
 	Vector2 Returner = {v1.x + v2.x * Scale, v1.y + v2.y * Scale};
 	return Returner;
 }
 
-Vector2 ConvertSecPosRelativeToPlayer(Sector sector, Vector2 playerPos) {
-	
+Vector2 ConvertSecPosRelativeToPlayer(Sector sector, Vector2 playerPos, int ArrayPlace) {
+	Vector2 Buff = {sector.SideDefsCords[ArrayPlace].x - playerPos.x, sector.SideDefsCords[ArrayPlace].y - playerPos.y};
+	return Buff;
 }
 
 

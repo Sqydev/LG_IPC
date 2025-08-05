@@ -120,9 +120,17 @@ int main() {
 			int yFloor2 = Window_Height / 2 + (wallHeight2 / 2);
 			int yCeil2  = Window_Height / 2 - (wallHeight2 / 2);
 			
-			// Draw
-			DrawTriangle((Vector2){x1, yCeil1}, (Vector2){x2, yCeil2}, (Vector2){x1, yFloor1}, DARKGRAY);
-			DrawTriangle((Vector2){x1, yFloor1}, (Vector2){x2, yFloor2}, (Vector2){x2, yCeil2}, DARKGRAY);
+			// Draw full wall quad
+			DrawTriangleStrip(
+    			(Vector2[]){
+        			{x1, yCeil1},
+        			{x2, yCeil2},
+        			{x1, yFloor1},
+        			{x2, yFloor2}
+    			},
+    			4,
+    			DARKGRAY
+			);
 
 		}
 

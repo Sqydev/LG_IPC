@@ -28,9 +28,18 @@ Vector2 Vector2SumAndScale(Vector2 v1, Vector2 v2, float Scale) {
 	return Returner;
 }
 
-Vector2 ConvertSecPosRelativeToPlayer(Sector sector, Vector2 playerPos, int ArrayPlace) {
+Vector2 ConvertSecPosRelativeToPlayer(Sector sector, Vector2 playerPos, int ArrayPlace, float playerAngle) {
 	Vector2 Buff = {sector.SideDefsCords[ArrayPlace].x - playerPos.x, sector.SideDefsCords[ArrayPlace].y - playerPos.y};
-	return Buff;
+
+	float cosA = cosf(-playerAngle);
+	float sinA = sinf(-playerAngle);
+
+	Vector2 RotatedBuff = {
+		Buff.x * cosA - Buff.y * sinA,
+		Buff.x * sinA + Buff.y * cosA
+	};
+
+	return RotatedBuff;
 }
 
 
@@ -86,14 +95,35 @@ int main() {
 		BeginDrawing();
 		ClearBackground(WHITE);
 
-		DrawCircleV(playerPos, 10, RED);
-		DrawLineV(playerPos, Vector2SumAndScale(playerPos, playerDir, 25.0f), BLUE);
-
 		for(int i = 0; i < TestSec.SideDefsNumb; i++) {
-			Vector2 start = TestSec.SideDefsCords[i];
-			Vector2 end = TestSec.SideDefsCords[(i + 1) % TestSec.SideDefsNumb];
+		    Vector2 start = ConvertSecPosRelativeToPlayer(TestSec, playerPos, i, playerAngle);
+			Vector2 end = ConvertSecPosRelativeToPlayer(TestSec, playerPos, (i + 1) % TestSec.SideDefsNumb, playerAngle);
 
-			DrawLineV(start, end, BLACK);
+			// Skip walls behind player
+			if (start.x <= 0 && end.x <= 0) continue;
+
+			// Projection
+			float fovRatio = (float)Window_Width / playerFov;
+			int screenCenterX = Window_Width / 2;
+
+			int x1 = screenCenterX + (start.y * fovRatio / start.x);
+			int x2 = screenCenterX + (end.y * fovRatio / end.x);
+
+			// Calc wall height on screen
+			float wallHeight1 = (TestSec.CeilingHeight - TestSec.FloorHeight) / start.x * fovRatio;
+			float wallHeight2 = (TestSec.CeilingHeight - TestSec.FloorHeight) / end.x * fovRatio;
+
+			// Calc y pos dependent on position
+			int yFloor1 = Window_Height / 2 + (wallHeight1 / 2);
+			int yCeil1  = Window_Height / 2 - (wallHeight1 / 2);
+
+			int yFloor2 = Window_Height / 2 + (wallHeight2 / 2);
+			int yCeil2  = Window_Height / 2 - (wallHeight2 / 2);
+			
+			// Draw
+			DrawTriangle((Vector2){x1, yCeil1}, (Vector2){x2, yCeil2}, (Vector2){x1, yFloor1}, DARKGRAY);
+			DrawTriangle((Vector2){x1, yFloor1}, (Vector2){x2, yFloor2}, (Vector2){x2, yCeil2}, DARKGRAY);
+
 		}
 
 		EndDrawing();

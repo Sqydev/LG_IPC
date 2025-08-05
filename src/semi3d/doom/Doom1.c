@@ -3,6 +3,7 @@
 
 #define Window_Width (960 * WindowScale)
 #define Window_Height (540 * WindowScale)
+#define Minimum_X_In_Rendering playerFov / Window_Width
 
 float WindowScale = 1.0f;
 int TargetFps = 60;
@@ -48,9 +49,10 @@ int main() {
 	SetTargetFPS(TargetFps);
 	DisableCursor();
 
-	Vector2 playerPos = {150, 150};
+	Vector2 playerPos = {0, 0};
 	float playerAngle = 0.0f;
 	float playerFov = 90 * DEG2RAD;
+	float playerHeight = 32.0f;
 
 	Sector TestSec = {
 		.FloorHeight = 0.0f,
@@ -97,29 +99,32 @@ int main() {
 
 		for(int i = 0; i < TestSec.SideDefsNumb; i++) {
 		    Vector2 start = ConvertSecPosRelativeToPlayer(TestSec, playerPos, i, playerAngle);
-			Vector2 end = ConvertSecPosRelativeToPlayer(TestSec, playerPos, (i + 1) % TestSec.SideDefsNumb, playerAngle);
+    		Vector2 end = ConvertSecPosRelativeToPlayer(TestSec, playerPos, (i + 1) % TestSec.SideDefsNumb, playerAngle);
 
-			// Skip walls behind player
-			if (start.x <= 0 && end.x <= 0) continue;
+			// This is to fix bug that wall is all over the screen when player is loocking is spec. location
+			if (start.x < Minimum_X_In_Rendering && start.x != 0) start.x = 0;
+			if (end.x < Minimum_X_In_Rendering && end.x != 0) end.x = 0;
 
-			// Projection
-			float fovRatio = (float)Window_Width / playerFov;
-			int screenCenterX = Window_Width / 2;
+    		// Skip walls behind player
+    		if (start.x <= 0 && end.x <= 0) continue;
 
-			int x1 = screenCenterX + (start.y * fovRatio / start.x);
-			int x2 = screenCenterX + (end.y * fovRatio / end.x);
+    		float fovRatio = (float)Window_Width / playerFov;
+    		int screenCenterX = Window_Width / 2;
 
-			// Calc wall height on screen
-			float wallHeight1 = (TestSec.CeilingHeight - TestSec.FloorHeight) / start.x * fovRatio;
-			float wallHeight2 = (TestSec.CeilingHeight - TestSec.FloorHeight) / end.x * fovRatio;
+    		int x1 = screenCenterX + (start.y * fovRatio / start.x);
+    		int x2 = screenCenterX + (end.y * fovRatio / end.x);
 
-			// Calc y pos dependent on position
-			int yFloor1 = Window_Height / 2 + (wallHeight1 / 2);
-			int yCeil1  = Window_Height / 2 - (wallHeight1 / 2);
+    		// Z perspective
+    		float z1Floor = (TestSec.FloorHeight - playerHeight) / start.x * fovRatio;
+    		float z1Ceil  = (TestSec.CeilingHeight - playerHeight) / start.x * fovRatio;
+    		float z2Floor = (TestSec.FloorHeight - playerHeight) / end.x * fovRatio;
+    		float z2Ceil  = (TestSec.CeilingHeight - playerHeight) / end.x * fovRatio;
 
-			int yFloor2 = Window_Height / 2 + (wallHeight2 / 2);
-			int yCeil2  = Window_Height / 2 - (wallHeight2 / 2);
-			
+    		int yFloor1 = Window_Height / 2 - z1Floor;
+    		int yCeil1  = Window_Height / 2 - z1Ceil;
+    		int yFloor2 = Window_Height / 2 - z2Floor;
+    		int yCeil2  = Window_Height / 2 - z2Ceil;
+
 			// Draw full wall quad
 			DrawTriangleStrip(
     			(Vector2[]){

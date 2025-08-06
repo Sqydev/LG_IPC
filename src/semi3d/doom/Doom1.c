@@ -4,6 +4,7 @@
 #define Window_Width (960 * WindowScale)
 #define Window_Height (540 * WindowScale)
 #define Minimum_X_In_Rendering playerFov / Window_Width
+#define NumbOfMapSectors 100
 
 float WindowScale = 1.0f;
 int TargetFps = 60;
@@ -53,17 +54,35 @@ int main() {
 	float playerAngle = 0.0f;
 	float playerFov = 90 * DEG2RAD;
 	float playerHeight = 32.0f;
-
-	Sector TestSec = {
-		.FloorHeight = 0.0f,
-		.CeilingHeight = 64.0f,
-		.LightLevel = 1.0f,
-		.SideDefsNumb = 4,
-		.SideDefsCords = {
-			{100, 100},
-        	{164, 100},
-        	{164, 164},
-        	{100, 164}
+	
+	// Create array of MapSectors
+	Sector MapSectors[NumbOfMapSectors] = {
+		// Every {} like this is new sector so:
+		// New
+		{
+			.FloorHeight = 0.0f,
+			.CeilingHeight = 10.0f,
+			.LightLevel = 1.0f,
+			.SideDefsNumb = 4,
+			.SideDefsCords = {
+				{100, 100},
+        		{164, 100},
+        		{164, 164},
+        		{100, 164}
+			}
+		},
+		// New
+		{
+			.FloorHeight = 0.0f,
+			.CeilingHeight = 32.0f,
+			.LightLevel = 1.0f,
+			.SideDefsNumb = 4,
+			.SideDefsCords = {
+				{200, 200},
+        		{264, 200},
+        		{264, 264},
+        		{200, 264}
+			}	
 		}
 	};
 
@@ -97,46 +116,48 @@ int main() {
 		BeginDrawing();
 		ClearBackground(WHITE);
 
-		for(int i = 0; i < TestSec.SideDefsNumb; i++) {
-		    Vector2 start = ConvertSecPosRelativeToPlayer(TestSec, playerPos, i, playerAngle);
-    		Vector2 end = ConvertSecPosRelativeToPlayer(TestSec, playerPos, (i + 1) % TestSec.SideDefsNumb, playerAngle);
+		for (int a = 0; a < NumbOfMapSectors; a++) {
+			for(int i = 0; i < MapSectors[a].SideDefsNumb; i++) {
+			    Vector2 start = ConvertSecPosRelativeToPlayer(MapSectors[a], playerPos, i, playerAngle);
+    			Vector2 end = ConvertSecPosRelativeToPlayer(MapSectors[a], playerPos, (i + 1) % MapSectors[a].SideDefsNumb, playerAngle);
 
-			// This is to fix bug that wall is all over the screen when player is loocking is spec. location
-			if (start.x < Minimum_X_In_Rendering && start.x != 0) start.x = 0;
-			if (end.x < Minimum_X_In_Rendering && end.x != 0) end.x = 0;
+				// This is to fix bug that wall is all over the screen when player is loocking is spec. location
+				if (start.x < Minimum_X_In_Rendering && start.x != 0) start.x = 0;
+				if (end.x < Minimum_X_In_Rendering && end.x != 0) end.x = 0;
 
-    		// Skip walls behind player
-    		if (start.x <= 0 && end.x <= 0) continue;
+    			// Skip walls behind player
+    			if (start.x <= 0 && end.x <= 0) continue;
 
-    		float fovRatio = (float)Window_Width / playerFov;
-    		int screenCenterX = Window_Width / 2;
+    			float fovRatio = (float)Window_Width / playerFov;
+    			int screenCenterX = Window_Width / 2;
 
-    		int x1 = screenCenterX + (start.y * fovRatio / start.x);
-    		int x2 = screenCenterX + (end.y * fovRatio / end.x);
+    			int x1 = screenCenterX + (start.y * fovRatio / start.x);
+    			int x2 = screenCenterX + (end.y * fovRatio / end.x);
 
-    		// Z perspective
-    		float z1Floor = (TestSec.FloorHeight - playerHeight) / start.x * fovRatio;
-    		float z1Ceil  = (TestSec.CeilingHeight - playerHeight) / start.x * fovRatio;
-    		float z2Floor = (TestSec.FloorHeight - playerHeight) / end.x * fovRatio;
-    		float z2Ceil  = (TestSec.CeilingHeight - playerHeight) / end.x * fovRatio;
+    			// Z perspective
+    			float z1Floor = (MapSectors[a].FloorHeight - playerHeight) / start.x * fovRatio;
+    			float z1Ceil  = (MapSectors[a].CeilingHeight - playerHeight) / start.x * fovRatio;
+    			float z2Floor = (MapSectors[a].FloorHeight - playerHeight) / end.x * fovRatio;
+    			float z2Ceil  = (MapSectors[a].CeilingHeight - playerHeight) / end.x * fovRatio;
 
-    		int yFloor1 = Window_Height / 2 - z1Floor;
-    		int yCeil1  = Window_Height / 2 - z1Ceil;
-    		int yFloor2 = Window_Height / 2 - z2Floor;
-    		int yCeil2  = Window_Height / 2 - z2Ceil;
+    			int yFloor1 = Window_Height / 2 - z1Floor;
+    			int yCeil1  = Window_Height / 2 - z1Ceil;
+    			int yFloor2 = Window_Height / 2 - z2Floor;
+    			int yCeil2  = Window_Height / 2 - z2Ceil;
 
-			// Draw full wall quad
-			DrawTriangleStrip(
-    			(Vector2[]){
-        			{x1, yCeil1},
-        			{x2, yCeil2},
-        			{x1, yFloor1},
-        			{x2, yFloor2}
-    			},
-    			4,
-    			DARKGRAY
-			);
+				// Draw full wall quad
+				DrawTriangleStrip(
+    				(Vector2[]){
+        				{x1, yCeil1},
+        				{x2, yCeil2},
+        				{x1, yFloor1},
+        				{x2, yFloor2}
+    				},
+    				4,
+    				DARKGRAY
+				);
 
+			}
 		}
 
 		EndDrawing();

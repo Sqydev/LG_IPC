@@ -61,7 +61,7 @@ int main() {
 		// New
 		{
 			.FloorHeight = 0.0f,
-			.CeilingHeight = 10.0f,
+			.CeilingHeight = 64.0f,
 			.LightLevel = 1.0f,
 			.SideDefsNumb = 4,
 			.SideDefsCords = {

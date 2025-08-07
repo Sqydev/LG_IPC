@@ -3,7 +3,6 @@
 
 #define Window_Width (960 * WindowScale)
 #define Window_Height (540 * WindowScale)
-#define Minimum_X_In_Rendering playerFov / Window_Width
 #define NumbOfMapSectors 100
 
 float WindowScale = 1.0f;
@@ -159,7 +158,6 @@ int main() {
     				4,
     				DARKGRAY
 				);
-
 			}
 		}
 

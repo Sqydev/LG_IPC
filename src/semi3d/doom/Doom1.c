@@ -120,7 +120,7 @@ int main() {
 			for(int i = 0; i < MapSectors[a].SideDefsNumb; i++) {
 			    Vector2 start = ConvertSecPosRelativeToPlayer(MapSectors[a], playerPos, i, playerAngle);
     			Vector2 end = ConvertSecPosRelativeToPlayer(MapSectors[a], playerPos, (i + 1) % MapSectors[a].SideDefsNumb, playerAngle);
-
+    			
 				// This is to fix bug that wall is all over the screen when player is loocking is spec. location
 				if (start.x < Minimum_X_In_Rendering && start.x != 0) start.x = 0;
 				if (end.x < Minimum_X_In_Rendering && end.x != 0) end.x = 0;
@@ -128,8 +128,8 @@ int main() {
     			// Skip walls behind player
     			if (start.x <= 0 && end.x <= 0) continue;
 
-    			float fovRatio = (float)Window_Width / playerFov;
     			int screenCenterX = Window_Width / 2;
+				float fovRatio = (float)Window_Width / playerFov;
 
     			int x1 = screenCenterX + (start.y * fovRatio / start.x);
     			int x2 = screenCenterX + (end.y * fovRatio / end.x);

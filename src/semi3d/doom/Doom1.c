@@ -118,12 +118,15 @@ int main() {
 
 		for (int a = 0; a < NumbOfMapSectors; a++) {
 			for(int i = 0; i < MapSectors[a].SideDefsNumb; i++) {
+				// Convert cord's of sector's edges used in this iteration to know where are they in player's perspective
+				// start.x and end.x are showing how far is sector's edge and start.y and end.y are showing how far is sector's edge
+				// And they are named start and end cuz it's rendering only 2 "walls" of sector per iteration
 			    Vector2 start = ConvertSecPosRelativeToPlayer(MapSectors[a], playerPos, i, playerAngle);
     			Vector2 end = ConvertSecPosRelativeToPlayer(MapSectors[a], playerPos, (i + 1) % MapSectors[a].SideDefsNumb, playerAngle);
     			
 				// This is to fix bug that wall is all over the screen when player is loocking is spec. location
-				if (start.x < Minimum_X_In_Rendering && start.x != 0) start.x = 0;
-				if (end.x < Minimum_X_In_Rendering && end.x != 0) end.x = 0;
+				// And this version fixes grafick bug when you're IN sector too:)
+				if ((start.x <= 0 && end.x > 0) || (start.x > 0 && end.x <= 0)) continue;
 
     			// Skip walls behind player
     			if (start.x <= 0 && end.x <= 0) continue;
@@ -160,6 +163,8 @@ int main() {
 			}
 		}
 
+		// Print Fps
+		DrawFPS(10, 10);
 		EndDrawing();
 	}
 

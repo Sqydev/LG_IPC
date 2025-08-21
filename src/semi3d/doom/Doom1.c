@@ -30,17 +30,20 @@ Vector2 Vector2SumAndScale(Vector2 v1, Vector2 v2, float Scale) {
 }
 
 Vector2 ConvertSecPosRelativeToPlayer(Sector sector, Vector2 playerPos, int ArrayPlace, float playerAngle) {
-	Vector2 Buff = {sector.SideDefsCords[ArrayPlace].x - playerPos.x, sector.SideDefsCords[ArrayPlace].y - playerPos.y};
+	// Do this to make player the center of the cord's
+	Vector2 CordsRelativeToPlayer = {sector.SideDefsCords[ArrayPlace].x - playerPos.x, sector.SideDefsCords[ArrayPlace].y - playerPos.y};
 
-	float cosA = cosf(-playerAngle);
-	float sinA = sinf(-playerAngle);
+	// Do cos and sin of playerAngle
+	float cosAngle = cosf(-playerAngle);
+	float sinAngle = sinf(-playerAngle);
 
-	Vector2 RotatedBuff = {
-		Buff.x * cosA - Buff.y * sinA,
-		Buff.x * sinA + Buff.y * cosA
+	// Rotate converted cord's so they are also Rotated like the player
+	Vector2 RotatedCordsRelativeToPlayer = {
+		CordsRelativeToPlayer.x * cosAngle - CordsRelativeToPlayer.y * sinAngle,
+		CordsRelativeToPlayer.x * sinAngle + CordsRelativeToPlayer.y * cosAngle
 	};
 
-	return RotatedBuff;
+	return RotatedCordsRelativeToPlayer;
 }
 
 
@@ -127,10 +130,12 @@ int main() {
 				// And this version fixes grafick bug when you're IN sector too:)
 				if ((start.x <= 0 && end.x > 0) || (start.x > 0 && end.x <= 0)) continue;
 
-    			// Skip walls behind player
+				// Skip walls behind the player
     			if (start.x <= 0 && end.x <= 0) continue;
 
+				// Find center of screen
     			int screenCenterX = Window_Width / 2;
+				// fovRatio is how many pixels of the screen are for 1 playerFov step. So f.e 10 pixels per 1 fov step
 				float fovRatio = (float)Window_Width / playerFov;
 
     			int x1 = screenCenterX + (start.y * fovRatio / start.x);

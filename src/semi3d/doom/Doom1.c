@@ -121,7 +121,7 @@ int main() {
 		for (int a = 0; a < NumbOfMapSectors; a++) {
 			for(int i = 0; i < MapSectors[a].SideDefsNumb; i++) {
 				// Convert cord's of sector's edges used in this iteration to know where are they in player's perspective
-				// start.x and end.x are showing how far is sector's edge and start.y and end.y are showing how far is sector's edge
+				// start.x and end.x are showing how far is sector's edge and start.y and end.y are showing how much to the side is sectors edge
 				// And they are named start and end cuz it's rendering only 2 "walls" of sector per iteration
 			    Vector2 start = ConvertSecPosRelativeToPlayer(MapSectors[a], playerPos, i, playerAngle);
     			Vector2 end = ConvertSecPosRelativeToPlayer(MapSectors[a], playerPos, (i + 1) % MapSectors[a].SideDefsNumb, playerAngle);
@@ -138,10 +138,12 @@ int main() {
 				// fovRatio is how many pixels of the screen are for 1 playerFov step. So f.e 10 pixels per 1 fov step
 				float fovRatio = (float)Window_Width / playerFov;
 
+				// Calculate how far from screenCenterX in x accis should be start point of side of sector and a seccount one
+				// And looking at comment above start and end init this formula makes perfect sence cuz it's screenCenterX + (how much to the side * how much pixels are for degree / how far)
     			int x1 = screenCenterX + (start.y * fovRatio / start.x);
     			int x2 = screenCenterX + (end.y * fovRatio / end.x);
 
-    			// Z perspective
+    			// Z perspective(to explain)
     			float z1Floor = (MapSectors[a].FloorHeight - playerHeight) / start.x * fovRatio;
     			float z1Ceil  = (MapSectors[a].CeilingHeight - playerHeight) / start.x * fovRatio;
     			float z2Floor = (MapSectors[a].FloorHeight - playerHeight) / end.x * fovRatio;

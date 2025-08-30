@@ -140,8 +140,9 @@ int main() {
 
 				// Calculate how far from screenCenterX in x accis should be start point of side of sector and a seccount one
 				// And looking at comment above start and end init this formula makes perfect sence cuz it's screenCenterX + (how much to the side * how much pixels are for degree / how far)
-    			int x1 = screenCenterX + (start.y * fovRatio / start.x);
-    			int x2 = screenCenterX + (end.y * fovRatio / end.x);
+    			// POS is Pos On Screen here
+				int startPOS = screenCenterX + (start.y * fovRatio / start.x);
+    			int endPOS = screenCenterX + (end.y * fovRatio / end.x);
 
     			// Z perspective(to explain)
     			float z1Floor = (MapSectors[a].FloorHeight - playerHeight) / start.x * fovRatio;
@@ -157,10 +158,10 @@ int main() {
 				// Draw full wall quad
 				DrawTriangleStrip(
     				(Vector2[]){
-        				{x1, yCeil1},
-        				{x2, yCeil2},
-        				{x1, yFloor1},
-        				{x2, yFloor2}
+        				{startPOS, yCeil1},
+        				{endPOS, yCeil2},
+        				{startPOS, yFloor1},
+        				{endPOS, yFloor2}
     				},
     				4,
     				DARKGRAY

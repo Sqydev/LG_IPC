@@ -1,0 +1,2 @@
+Tak, klikasz sobie na mniejsce i się zaznacza pozycja(przechowuje w arrayce więc wiadomo kolejność) i jak masz już zaznaczoną kolejność to wtedy ci twoży sektor z tymi pozycjami.
+Fajne: Zrób że rysuje linię od ostatniej pozycji w arrayce do myszki dla takiego fajnego efektu:)

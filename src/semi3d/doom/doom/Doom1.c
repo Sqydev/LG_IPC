@@ -48,6 +48,7 @@ Vector2 ConvertSecPosRelativeToPlayer(Sector sector, Vector2 playerPos, int Arra
 
 
 int main() {
+	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(Window_Width, Window_Height, "Doom Like Engine");
 	SetTargetFPS(TargetFps);
 	DisableCursor();
